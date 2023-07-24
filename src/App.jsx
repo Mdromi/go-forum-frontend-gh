@@ -1,13 +1,9 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import "./Routes";
 
 function App() {
-
-  return (
-    <>
-      <h1>Hello World</h1>
-    </>
-  )
+  return <Routes />;
 }
 
-export default App
+export default App;
