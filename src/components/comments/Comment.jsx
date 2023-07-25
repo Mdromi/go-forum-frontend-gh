@@ -1,5 +1,4 @@
 import React from 'react'
-import Moment from 'react-moment';
 import { useSelector } from 'react-redux'
 import {
   Card, CardText, CardBody,
@@ -7,9 +6,11 @@ import {
 } from 'reactstrap';
 
 import '../posts/Posts.css';
-import Default from '../../Assets/default.png'
+import Default from '../../assets/default.png'
 import EditComment from './EditComment'
 import DeleteComment from './DeleteComment'
+
+
 
 
 const Comment = ({ comment }) => {
@@ -40,9 +41,9 @@ const Comment = ({ comment }) => {
                 <span href="" style={{fontWeight: 'bold'}}>{comment.user.username}</span>
               </span>
               <span style={{float: 'right'}}>
-                <Moment fromNow>
+                <p>
                   {comment.created_at}
-                </Moment>
+                </p>
               </span>
               </span>
             : "" }

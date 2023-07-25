@@ -1,108 +1,124 @@
-const { useState } = require("react");
+import React, { useState } from "react";
+import { NavLink, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-import { useSelector, useDispatch } from 'react-redux';
-import {NavLink, Link} from 'rect-router-dom'
-
-import {SignOut} from '../store/modules/auth/actions/authActions'
-import Default from '../assets/default.png'
-
-import './Navigation.css'
+import { SignOut } from "../store/modules/auth/actions/authAction";
+import Default from "../assets/default.png";
+import "./Navigation.css";
 
 import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem
-} from 'reactstrap'
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 
 const Navigation = () => {
-    const [isOpen, setIsOpen] = useState(false)
-    const currentState = useSelector((state) => state)
+  const [isOpen, setIsOpen] = useState(false);
 
-    const {isAuthenticated, currentUser} = currentState.Auth
+  const currentState = useSelector((state) => state);
 
-    const dispatch = useDispatch()
-    const logoutUser = () => dispatch(SignOut())
+  const { isAuthenticated, currentUser } = currentState.Auth;
 
+  const dispatch = useDispatch();
 
-    let imagePreview = null
-    if(currentUser && currentUser.avatar_path) {
-        imagePreview = (<img className="img_style_nav" src={currentUser.avatar_path} alt="profile pic" />)
-    } else {
-        imagePreview = (<img className="img_style_nav" src={Default} alt="profile pic" />)
-    }
+  const logoutUser = () => dispatch(SignOut());
 
-    const logout = (e) => {
-        e.prventDefault()
-        logoutUser()
-    }
+  let imagePreview = null;
+  if (currentUser && currentUser.avatar_path) {
+    imagePreview = (
+      <img
+        className="img_style_nav"
+        src={currentUser.avatar_path}
+        alt="profile 1"
+      />
+    );
+  } else {
+    imagePreview = (
+      <img className="img_style_nav" src={Default} alt="profile 2" />
+    );
+  }
 
-    const userProfile = isAuthenticated ? `/profile/${currentState.Auth.currentUser.id}` : ""
+  const logout = (e) => {
+    e.preventDefault();
+    logoutUser();
+  };
 
+  const userProfile = isAuthenticated
+    ? `/profile/${currentState.Auth.currentUser.id}`
+    : "";
 
-    const SignedInLinks = (
-        <>
-        <NavItem className='mt-2' style={{marginRight: "15px"}}>
-            <NavLink to="/createpost">
-                Create Post
-            </NavLink>
-        </NavItem>
-        <NavItem className='mt-2' style={{marginRight: "15px"}}>
-            <NavLink to="/authposts">
-                My Posts
-            </NavLink>
-        </NavItem>
-        <UncontrolledDropdown>
-            <DropdownToggle nav inNavbar>
-                {imagePreview}
-            </DropdownToggle>
-            <DropdownMenu right>
-            <DropdownItem>
-                <NavItem>
-                    <NavLink to={userProfile}>
-                        Profile
-                    </NavLink>
-                </NavItem>
-            </DropdownItem>
-            <DropdownItem divider/>
-            <DropdownItem>
-                <a onClick={logout}>Logout</a>
-            </DropdownItem>
+  const SignedInLinks = (
+    <React.Fragment>
+      <NavItem className="mt-2" style={{ marginRight: "15px" }}>
+        <NavLink to="/createpost">Create Post</NavLink>
+      </NavItem>
+      <NavItem className="mt-2" style={{ marginRight: "15px" }}>
+        <NavLink to="/authposts">My Posts</NavLink>
+      </NavItem>
+      <UncontrolledDropdown nav inNavbar>
+        <DropdownToggle nav caret>
+          {imagePreview}
+        </DropdownToggle>
+        <DropdownMenu right>
+          <DropdownItem>
+            <NavItem>
+              <NavLink to={userProfile}>Profile</NavLink>
+            </NavItem>
+          </DropdownItem>
+          <DropdownItem divider />
+          <DropdownItem>
+            <a onClick={logout}>Logout</a>
+          </DropdownItem>
         </DropdownMenu>
-        </UncontrolledDropdown>
-        </>
-    )
+      </UncontrolledDropdown>
+    </React.Fragment>
+  );
 
-    const SignedOutLinks = (
-        <>
-        <NavItem style={{marginRight: "15px"}}>
-            <Link to="/login">Login</Link>
-        </NavItem>
-        <NavItem>
-            <Link to="/signup">Signup</Link>
-        </NavItem>
-        </>
-    )
+  const SignedOutLinks = (
+    <React.Fragment>
+      <NavItem style={{ marginRight: "20px" }}>
+        <Link to="/login">Login</Link>
+      </NavItem>
+      <NavItem>
+        <Link to="/signup">Signup</Link>
+      </NavItem>
+    </React.Fragment>
+  );
 
-    return (
-        <div className="mb-3">
-            <Navbar color="right" light expand="md">
-                <NavbarBrand className='mx-auto' href='/'>Seamflow</NavbarBrand>
-                <NavbarToggler onClick={() => setIsOpen(!isOpen)} />
-                <Collapse isOpen={isOpen} navbar>
-                    <Nav className='ml-auto' navbar>
-                        {isAuthenticated ? SignedInLinks : SignedOutLinks}
-                    </Nav>
-                </Collapse>
-            </Navbar>
-        </div>
-    )
-}
+  return (
+    <div className="mb-3">
+      <div style={{ textAlign: "center" }}>
+        {" "}
+        Developed with <span role="img"> ❤️ </span> by{" "}
+        <a
+          className="link-style"
+          href="https://github.com/Mdromi"
+          target="_blank"
+        >
+          @mdromi
+        </a>
+      </div>
+      <Navbar color="light" light expand="md">
+        <NavbarBrand className="mx-auto" href="/">
+          <span style={{ fontWeight: "bold" }}>SeamFlow</span>
+        </NavbarBrand>
+        <NavbarToggler onClick={() => setIsOpen(!isOpen)} /> 
+        <Collapse isOpen={isOpen} navbar>
+           
+          <Nav className="ml-auto" navbar>
+            {isAuthenticated ? SignedInLinks : SignedOutLinks}
+          </Nav>
+        </Collapse>
+      </Navbar>
+    </div>
+  );
+};
 
-export default Navigation
+export default Navigation;

@@ -5,7 +5,7 @@ import Navigation from './Navigation'
 
   const Dashboard = () => {
     return (
-      <div>
+      <div id="page-container">
         <Navigation />
         <Posts /> 
       </div>
@@ -13,3 +13,4 @@ import Navigation from './Navigation'
   }
 
   export default Dashboard;
+

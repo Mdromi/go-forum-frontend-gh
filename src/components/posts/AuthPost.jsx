@@ -1,10 +1,9 @@
 import React from 'react'
-import Moment from 'react-moment';
 import { useSelector } from 'react-redux'
 import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
 
 import './Posts.css';
-import Default from '../../Assets/default.png'
+import Default from '../../assets/default.png'
 import Likes from '../likes/Likes'
 import Comments from '../comments/Comments'
 import EditPost from './EditPost';
@@ -18,7 +17,7 @@ const AuthPost = ({ post }) => {
   const authID = currentState.Auth.currentUser.id
 
   let $imagePreview = null;
-  if(post.author.avatar_path){
+  if(post.author?.avatar_path){
     $imagePreview = (<img className="img_style_post" src={post.author.avatar_path} alt="no one"/>);
   } else {
     $imagePreview = (<img className="img_style_post" src={Default} alt="no one 2"/>);
@@ -32,10 +31,10 @@ const AuthPost = ({ post }) => {
           <span className="mr-2">
             {$imagePreview}
           </span>
-          <span href="" style={{fontWeight: 'bold'}}>{post.author.username}</span>
+          <span href="" style={{fontWeight: 'bold'}}>{post.author?.username}</span>
         </span>
         <span style={{float: 'right'}}>
-          <Moment fromNow>{post.created_at}</Moment>
+          <p>{post.created_at}</p>
         </span>
         </CardTitle>
         <CardTitle>{post.title}</CardTitle>

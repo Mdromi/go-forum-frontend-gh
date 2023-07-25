@@ -1,85 +1,79 @@
 import React, { useState } from "react";
-import {
-  Label,
-  Input,
-  FormGroup,
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-} from "reactstrap";
+import { Label, Input, FormGroup, Button, Card, CardHeader, CardBody } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect, Link } from "react-router-dom";
+import { useNavigate, Link } from 'react-router-dom';
 
-import Navigation from "../Navigation";
-import { ResetPassword } from "../../store/modules/auth/actions/authAction";
-import Message from "../utils/Message";
+import Navigation from '../Navigation'
+import { ResetPassword } from '../../store/modules/auth/actions/authAction';
+import Message from '../utils/Message';
+
+
 
 const PasswordReset = (props) => {
+
   const currentState = useSelector((state) => state.Auth);
+  const navigate = useNavigate();
 
   const [resetDetails, setResetDetails] = useState({
     token: props.match.params.token,
-    new_password: "",
-    retype_password: "",
+    new_password: '',
+    retype_password: ''
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const resetPass = (details) => dispatch(ResetPassword(details, clearInput));
+  const resetPass = (details) => dispatch(ResetPassword(details, clearInput))
 
-  const [showLogin, setShowLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false)
 
   const clearInput = () => {
-    setShowLogin(true);
+    setShowLogin(true)
     setResetDetails({
-      token: "",
-      new_password: "",
-      retype_password: "",
-    });
-  };
+      token: '',
+      new_password: '',
+      retype_password: ''
+    })
+  } 
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setResetDetails({
       ...resetDetails,
-      [e.target.name]: e.target.value,
-    });
-  };
+      [e.target.name]: e.target.value
+    })
+  }
 
   const submitRequest = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     resetPass({
       token: resetDetails.token,
       new_password: resetDetails.new_password,
-      retype_password: resetDetails.retype_password,
+      retype_password: resetDetails.retype_password
     });
-  };
+  }
 
-  if (currentState.isAuthenticated) {
-    return <Redirect to="/" />;
+  if(currentState.isAuthenticated){
+   navigate("/");
   }
 
   return (
-    <div className="App">
+    <div className="App" id="page-container">
       <div>
         <Navigation />
       </div>
       <div className="container Auth">
-        <div className="card-style">
-          <Card className="card-style">
-            <CardHeader>Reset Password</CardHeader>
-            <CardBody>
-              <FormGroup>
-                {currentState.successMessage != null &&
-                currentState.resetError == null ? (
-                  <span>
-                    <Message msg={currentState.successMessage} />
-                  </span>
+        <Card className="card-style">
+          <CardHeader>Reset Password</CardHeader>
+          <CardBody>
+            <FormGroup>
+              { currentState.successMessage != null && currentState.resetError == null ? (
+                <span>
+                <Message msg={currentState.successMessage} />
+                </span>
                 ) : (
                   ""
-                )}
-              </FormGroup>
-              <FormGroup>
+              )}
+            </FormGroup>
+            <FormGroup>
             { currentState.resetError && currentState.resetError.Invalid_token ? (
               <span>
                 <small className="color-red">{currentState.resetError.Invalid_token}</small>
@@ -104,6 +98,7 @@ const PasswordReset = (props) => {
                 ""
             )}
             </FormGroup>
+
             {showLogin ? (
               <a href="/login" className="btn btn-primary form-control"
                 >
@@ -143,8 +138,9 @@ const PasswordReset = (props) => {
             </CardBody>
           </Card>
         </div>
+        
       </div>
-    </div>
   );
-};
+}
+
 export default PasswordReset

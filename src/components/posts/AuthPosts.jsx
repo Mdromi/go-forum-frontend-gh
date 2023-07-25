@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import { FaFilter } from 'react-icons/fa'
 
@@ -11,6 +11,7 @@ import './Posts.css';
 
 const AuthPosts = () => {
 
+  const navigate = useNavigate();
   const currentState = useSelector((state) => state.Auth);
   const authID = currentState.currentUser.id
 
@@ -26,15 +27,15 @@ const AuthPosts = () => {
 
    //incase someone visits the route manually
   if(!currentState.isAuthenticated){
-    return <Redirect to='/login' />
+   navigate("/login");
   }
 
   let authPosts = postsSelector.authPosts.map(post => {
     return (
       <div  className="mt-2 style-card" key={post.id}>
-       <Link to={'/posts/' + post.id} key={post.id}>
-        <AuthPost post={post} key={post.id} />
-      </Link>
+       <Link to={'/posts/' + post.id} key={post.id}>
+        <AuthPost post={post} key={post.id} />
+      </Link>
     </div>
       );
   })

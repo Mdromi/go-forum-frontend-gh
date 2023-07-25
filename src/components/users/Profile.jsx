@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Label,
   Input,
@@ -10,7 +10,6 @@ import {
   Col,
   Row,
   Form,
-  CustomInput,
   Modal,
   ModalHeader,
   ModalFooter,
@@ -21,13 +20,15 @@ import {
   updateUser,
   deleteUser,
 } from "../../store/modules/auth/actions/authAction";
-import Default from "../../Assets/default.png";
+import Default from "../../assets/default.png";
 import "./Profile.css";
 import Message from "../utils/Message";
 
 import Navigation from "../Navigation";
 
 const Profile = () => {
+  const navigate = useNavigate();
+
   const [modal, setModal] = useState(false);
 
   const toggle = (e) => {
@@ -74,13 +75,13 @@ const Profile = () => {
   const handleImageChange = (e) => {
     e.preventDefault();
     let reader = new FileReader();
-    let theFile = e.target.files[0];
+    let thefile = e.target.files[0];
 
-    reader.onload = () => {
-      setFile(theFile);
+    reader.onloadend = () => {
+      setFile(thefile);
       setUploadedFile(reader.result);
     };
-    reader.readAsDataURL(theFile);
+    reader.readAsDataURL(thefile);
   };
 
   let imagePreview = null;
@@ -102,7 +103,7 @@ const Profile = () => {
 
   //incase someone visits the route manually
   if (!currentUserState.isAuthenticated) {
-    return <Redirect to="/login" />;
+    navigate("/login");
   }
 
   const submitUserAvatar = (e) => {
@@ -127,7 +128,7 @@ const Profile = () => {
   };
 
   return (
-    <>
+    <Fragment>
       <Navigation />
       <div className="post-style container">
         <div className="card-style">
@@ -151,9 +152,9 @@ const Profile = () => {
             <Form onSubmit={submitUserAvatar} encType="multipart/form-data">
               <div>
                 <FormGroup className="style_file_input">
-                  <CustomInput
+                  <Input
                     type="file"
-                    accept="image/*"
+                    accept="image/*" // Corrected attribute value
                     id="exampleCustomFileBrowser"
                     onChange={(e) => handleImageChange(e)}
                   />
@@ -204,11 +205,11 @@ const Profile = () => {
               </Col>
             </Row>
 
-            <From onSubmit={submitUser}>
+            <Form onSubmit={submitUser}>
               <Row>
                 <Col sm="12" md={{ size: 10, offset: 1 }}>
                   <FormGroup>
-                    <Label for="exampleAddress">Address</Label>
+                    <Label for="exampleAddress">Email</Label>
                     <Input
                       type="text"
                       name="email"
@@ -327,7 +328,8 @@ const Profile = () => {
                   </FormGroup>
                 </Col>
               </Row>
-            </From>
+            </Form>
+
             <Row className="mt-3">
               <Col sm="12" md={{ size: 10, offset: 1 }}>
                 <FormGroup>
@@ -338,6 +340,7 @@ const Profile = () => {
               </Col>
             </Row>
           </CardBody>
+
           <Modal isOpen={modal} toggle={toggle}>
             <ModalHeader toggle={toggle} className="text-center">
               Are you sure you want to delete your account?
@@ -367,8 +370,8 @@ const Profile = () => {
           </Modal>
         </div>
       </div>
-    </>
+    </Fragment>
   );
 };
 
-export default Profile
+export default Profile;
